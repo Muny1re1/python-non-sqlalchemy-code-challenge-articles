@@ -25,7 +25,6 @@ class Article:
     def title(self):
         return self._title
 
-# Ensure the related classes Author and Magazine are defined correctly
 
 class Author:
     def __init__(self, name):
