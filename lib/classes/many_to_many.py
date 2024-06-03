@@ -89,21 +89,23 @@ class Magazine:
     def category(self, category):
         if not (isinstance(category, str) or len(category) == 0):
             raise ValueError("Category must be a non-empty string.")
-        self._category = category
+        else:
+            self._category = category
     
     def articles(self):
         return [article for article in Article.all_articles if article.magazine == self]
     
     def contributors(self):
-        return list(set(article.author for article in self.articles()))
+        return list({article.author for article in Article.all_articles if article.magazine == self})
 
     def article_titles(self):
-        return [article.title for article in self.articles()]
+        list_titles = [article.title for article in Article.all_articles if article.magazine == self]
+        return list_titles if len(list_titles) > 0 else None
     
     def contributing_authors(self):
-        author_count = {}
-        for article in self.articles():
-            if article.author not in author_count:
-                author_count[article.author] = 0
-            author_count[article.author] += 1
-        return [author for author, count in author_count.items() if count > 2]
+        authors = [article.author for article in Article.all_articles if article.magazine == self]
+        contributing_authors = []
+        for author in authors:
+            if authors.count(author) > 2:
+                contributing_authors.append(author)
+        return contributing_authors if len(contributing_authors) > 0 else None
